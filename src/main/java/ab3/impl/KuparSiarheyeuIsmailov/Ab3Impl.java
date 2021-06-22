@@ -2,6 +2,9 @@ package ab3.impl.KuparSiarheyeuIsmailov;
 
 import ab3.Ab3;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Ab3Impl implements Ab3 {
 
 	/*
@@ -65,38 +68,53 @@ public class Ab3Impl implements Ab3 {
 	@Override
 	public int farthestVertex(int startingVertex, int[][] adjacencyCostMatrix) {
 
-
 		// YOUR CODE HERE
 		return -1;
 	}
 
-	 private int findElement(int [][] adjacencyCostMatrix, int searchStartingVertex) {
 
-		if (searchStartingVertex == null || adjacencyCostMatrix == null) return null;
-
-		for (int rowIndex = 0; rowIndex < array.length; rowIndex++ ) {
-			int[] row = adjacencyCostMatrix[rowIndex];
-			if (row != null) {
-				for (int columnIndex = 0; columnIndex < row.length; columnIndex++) {
-					if (searchStartingVertex == row[columnIndex]) {
-						return adjacencyCostMatrix[rowIndex][columnIndex];
-					}
-				}
-			}
-		}кидай
-		return -1;
-	}
 
 
 	@Override
 	public byte[] lzwEncode(byte[] data, int bits) {
-		// YOUR CODE HERE
-		return null;
+		List<Long> output = new LinkedList<>();
+
+		List<Byte> Wz = new LinkedList<>();
+
+		CodeTabelle codeTabelle = new CodeTabelle(bits);
+
+		for(byte b : data){
+			Wz.add(b);
+
+			if(!codeTabelle.containsPattern(Wz)){
+				List<Byte> W = new LinkedList<>(Wz);
+				W.remove(W.size()-1);
+
+				byte z = Wz.get(Wz.size()-1);
+
+				output.add(codeTabelle.codeWordForSymbol(W));
+
+				codeTabelle.newSymbol(Wz);
+
+				Wz.clear();
+				Wz.add(z);
+
+			}
+		}
+		long[] outputArray = null; //TODO:convert
+
+		BitConverter converter = new BitConverter(bits);
+
+		return converter.convertFromBitSize(outputArray);
 	}
 
 	@Override
 	public byte[] lzwDecode(byte[] data, int bits) {
-		// YOUR CODE HERE
+
+		BitConverter converter = new BitConverter(bits);
+
+		long[] codewords = converter.convertToBitSize(data);
+
 		return null;
 	}
 }
