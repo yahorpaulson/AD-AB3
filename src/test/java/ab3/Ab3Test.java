@@ -3,6 +3,7 @@ package ab3;
 import ab3.impl.KuparSiarheyeuIsmailov.Ab3Impl;
 import ab3.Ab3.Node;
 import ab3.Ab3.Tree;
+import ab3.impl.KuparSiarheyeuIsmailov.BitConverter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -25,7 +26,30 @@ public class Ab3Test {
     //assertEquals
     //assertTrue
     //assertArrayEquals
-    
+
+    @Test
+    public void BitConverterTest(){
+        // 9 byte = 72 bit
+        byte[] data = new byte[]{123, 92, 1, 16, 123, 92, 1, 10, 20};
+
+        //9-bit words
+        int bitSize = 9;
+
+        BitConverter converter = new BitConverter(bitSize);
+
+        long[] encoded = converter.convertToBitSize(data);
+
+        //should contain 72 bit / 9 bit * 8 words
+        assertEquals(8, encoded.length);
+
+        System.out.println(Arrays.toString(encoded));
+
+        byte [] decoded = converter.convertFromBitSize(encoded);
+
+        System.out.println(Arrays.toString(decoded));
+
+        assertArrayEquals(data, decoded);
+    }
     @Test
     public void testTreeReconstruction()
     {
@@ -213,7 +237,7 @@ public class Ab3Test {
         int[] result = new int[tree.size];
         int pos = 0;
 
-        Stack<Node> s = new Stack<Node>();
+        Stack<Node> s = new Stack<>();
         Node curr = tree.root;
         while (curr != null || s.size() > 0)
         {
@@ -238,7 +262,7 @@ public class Ab3Test {
         
         if (tree.root == null) return result;
  
-        Stack<Node> s = new Stack<Node>();
+        Stack<Node> s = new Stack<>();
         s.push(tree.root);
  
         while (!s.empty())
